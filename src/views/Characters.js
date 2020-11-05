@@ -1,10 +1,11 @@
 import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import privateKey from '../.secret'
 import CharacterRow from '../components/CharacterRow'
 
-import md5 from 'md5'
+import { publicKey, timeStamp, hash } from '../utils/getHash'
+
 import Pagination from '../components/pagination'
+import { Link } from 'react-router-dom'
 
 const Characters = () => {
   const valueOffset = 20
@@ -14,9 +15,6 @@ const Characters = () => {
   const [characters, setCharacters] = useState([])
 
   useEffect(() => {
-    const publicKey = '5a3ef8fbf8b8bc9c15e221395e38d0e1'
-    const timeStamp = new Date().getMilliseconds()
-    const hash = md5(`${timeStamp}${privateKey}${publicKey}`)
     const generateUrl = 'https://gateway.marvel.com/v1/public/characters'
 
     Axios({
@@ -56,6 +54,13 @@ const Characters = () => {
         setCurrentPage={setCurrentPage}
         valueOffset={valueOffset}
       ></Pagination>
+
+      <Link to='/search'>
+        <p>Rechercher un heros</p>
+      </Link>
+      <Link to='/favorite'>
+        <p>List des favorie</p>
+      </Link>
     </div>
   )
 }

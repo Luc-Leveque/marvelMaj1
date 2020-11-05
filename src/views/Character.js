@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import md5 from 'md5'
-import privateKey from '../.secret'
 import Axios from 'axios'
 
+import { publicKey, timeStamp, hash } from '../utils/getHash'
+
 const Character = props => {
-  const [character, setCharacter] = useState([])
+  const [character, setCharacter] = useState({})
 
   useEffect(() => {
-    const publicKey = '5a3ef8fbf8b8bc9c15e221395e38d0e1'
-    const timeStamp = new Date().getMilliseconds()
-    const hash = md5(`${timeStamp}${privateKey}${publicKey}`)
     const generateUrl = `https://gateway.marvel.com/v1/public/characters/${props.match.params.id}`
 
     Axios({
@@ -24,8 +21,7 @@ const Character = props => {
       }
     })
       .then(res => {
-        setCharacter(res.data.data.results)
-        console.log('List -> res.data', res.data.data.results)
+        setCharacter(res.data.data.results[0])
       })
       .catch(err => {
         console.log(err)
@@ -34,7 +30,10 @@ const Character = props => {
 
   return (
     <div className='App-header'>
-      <p>{props.match.params.id}</p>
+      <p>
+        {props.match.params.id} {character.name}
+      </p>
+      <Link to='/Characters'>Liste des heros</Link>
       <Link to='/'>Login</Link>
     </div>
   )

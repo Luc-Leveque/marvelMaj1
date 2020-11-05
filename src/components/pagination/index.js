@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+import PropTypes from 'prop-types'
+
 const PageCreator = (pagesNumber, setCurrentPage) => {
   let pageElt = []
 
   for (let i = 0; i <= pagesNumber; i++) {
     pageElt.push(
       <PageComponent
+        key={i}
         onClick={() => {
           console.log(i)
           setCurrentPage(i)
@@ -46,5 +49,11 @@ const PaginationContainer = styled.div`
   background-color: red;
   flex-wrap: wrap;
 `
+
+Pagination.propTypes = {
+  total: PropTypes.number,
+  setCurrentPage: PropTypes.func,
+  valueOffset: PropTypes.number
+}
 
 export default Pagination
