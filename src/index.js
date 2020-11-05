@@ -1,23 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 import './index.css'
-import * as serviceWorker from './serviceWorker'
 
-import { themeLight, themeDark } from './config/themes'
+import { themeDark } from './config/themes'
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useParams,
-  useLocation
-} from 'react-router-dom'
-
-import App from './views/App'
-import Characters from './views/Characters'
-import Character from './views/Character'
+import App from './App'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -40,47 +30,10 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={themeDark}>
       <GlobalStyle />
-      <Router>
-        <Switch>
-          <Route exact path='/'>
-            <App />
-          </Route>
-          <Route exact path='/characters'>
-            <Characters />
-          </Route>
-          <Route path='/characters/:id'>
-            <Child />
-          </Route>
-          <Route path='*'>
-            <NoMatch />
-          </Route>
-        </Switch>
-      </Router>
+      <App />
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
 
-function Child() {
-  let { id } = useParams()
-
-  return (
-    <div>
-      <Character id={id} />
-    </div>
-  )
-}
-
-function NoMatch() {
-  let location = useLocation()
-
-  return (
-    <div>
-      <h3>
-        No match for <code>{location.pathname}</code>
-      </h3>
-    </div>
-  )
-}
-
-serviceWorker.register()
+serviceWorkerRegistration.register()
